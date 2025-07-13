@@ -57,4 +57,16 @@ if(phone.length<10)
     res.send({status:0,msg:"ther is error in update",err:error})
    }
 }
-module.exports={studentinsert,studentview,studentdelete,studentupdate}
+// find student data by id
+let studentdatabyid=async(req,res)=>{
+    let id=req.params.id
+let ss= await studentTable.findById(id)
+   if(ss!=null||ss!=""||ss!=undefined||ss!={})
+   {
+    res.send({status:1,data:ss})
+   }
+   else{
+    res.send({status:0,msg:"there is no data to display"})
+   }
+}
+module.exports={studentinsert,studentview,studentdelete,studentupdate,studentdatabyid}

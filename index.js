@@ -1,0 +1,13 @@
+const exp=require("express")
+const cors=require('cors')
+const studentroute = require("./app/Routes/Web/StudentRoute")
+const dbconnect = require("./app/DB/db")
+const app=exp()
+app.use(cors())
+app.use(exp.json())
+require('dotenv').config()
+app.use("/web/api/student",studentroute)
+dbconnect()
+app.listen(process.env.PORT,()=>{
+   console.log(`the app is running on port ${process.env.PORT}`)
+})

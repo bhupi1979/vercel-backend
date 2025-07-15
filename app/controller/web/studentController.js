@@ -54,7 +54,14 @@ if(phone.length<10)
         res.send({status:1,msg:"data updated successfuly",data:ss})
     
    } catch (error) {
-    res.send({status:0,msg:"ther is error in update",err:error})
+     console.error('Update error:', error);
+
+
+     res.status(500).json({
+      message: 'Internal Server Error',
+      error: error.message, // Optional: only in dev
+    })
+   // res.send({status:0,msg:"ther is error in update",err:error})
    }
 }
 // find student data by id

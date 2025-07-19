@@ -47,38 +47,42 @@ let studentupdate=async(req,res)=>{
     return res.send({msg:"phone number cannot be greate than 10"})
 if(phone.length<10)
     return res.send({msg:"phone number cannot be less than 10"})
-   let ss=await studentTable.updateOne({_id:id},obj)
-   try {
-       console.log(ss)
-        if(ss.modifiedCount===0)
-            return res.send({msg:"no record updated"})
-        res.send({status:1,msg:"data updated successfuly",data:ss})
+   await studentTable.updateOne({_id:id},obj).then(()=>{
+ res.send({status:1,msg:"data updated successfully"})
+   }).catch((err)=>{
+ res.send({status:0,msg:"data did not save there is some error ",Error:err})
+   })
+//    try {
+//        if(!ss)res.send({status:0,msg:"ther is internal erorr or validation error"})
+//         if(ss.modifiedCount===0)
+//             return res.send({msg:"no record updated"})
+//         res.send({status:1,msg:"data updated successfuly",data:ss})
     
-   } catch (error) {
-     console.error('Update error:', error);
+//    } catch (error) {
+//      console.error('Update error:', error);
 
- if (error.name === 'MongoServerError') {
-      if (error.code === 11000) {
-        // Duplicate key (e.g. email already exists)
-        return res.status(409).json({
-          status: 0,
-          message: 'Duplicate value error',
-          field: Object.keys(error.keyPattern)[0],
-        });
-      }
+//  if (error.name === 'MongoServerError') {
+//       if (error.code === 11000) {
+//         // Duplicate key (e.g. email already exists)
+//         return res.status(409).json({
+//           status: 0,
+//           message: 'Duplicate value error',
+//           field: Object.keys(error.keyPattern)[0],
+//         });
+//       }
 
-if (error.name === 'ValidationError') {
-      return res.status(400).json({
-        status: 0,
-        message: 'Validation failed',
-        error: error.message,
-      });
-    }      res.status(500).json({
-      message: 'Internal Server Error',
-      error: error.message, // Optional: only in dev
-    })
-   // res.send({status:0,msg:"ther is error in update",err:error})
- }}
+// if (error.name === 'ValidationError') {
+//       return res.status(400).json({
+//         status: 0,
+//         message: 'Validation failed',
+//         error: error.message,
+//       });
+//     }      res.status(500).json({
+//       message: 'Internal Server Error',
+//       error: error.message, // Optional: only in dev
+//     })
+//    // res.send({status:0,msg:"ther is error in update",err:error})
+//  }}
 }
 // find student data by id
 let studentdatabyid=async(req,res)=>{
